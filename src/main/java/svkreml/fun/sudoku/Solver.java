@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Solver {
     public static void main(String[] args) throws InterruptedException {
@@ -72,7 +73,7 @@ public class Solver {
 
             myWebDriver.wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@value=' Bring on a new puzzle! ']")));
             myWebDriver.chromeDriver.findElement(By.xpath("//input[@value=' Bring on a new puzzle! ']")).click();
-        } catch (Exception e) {
+        } catch (NoSuchElementException e) {
             e.printStackTrace();
             System.out.println("решение проблемы плохой загрузки не предусмотрено");
         }
