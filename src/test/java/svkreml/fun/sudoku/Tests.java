@@ -18,7 +18,7 @@ public class Tests {
                         "9---3---8\n" +
                         "--6---9--\n" +
                         "34-982-15\n";
-        Field field = new Field(input);
+        SodokuSolver field = new SodokuSolver(input);
         field.printField();
         field.solve();
         field.printField();
@@ -37,7 +37,7 @@ public class Tests {
                         "3---79--6\n" +
                         "-----8-2-\n" +
                         "-68--4-9-\n";
-        Field field = new Field(input);
+        SodokuSolver field = new SodokuSolver(input);
         field.printField();
         field.solve();
         field.printField();
@@ -56,5 +56,26 @@ public class Tests {
 |2 6 8|1 3 4|7 9 5|
 ------------------
         * */
+    }
+
+    @Test
+    public void test4() {
+
+
+        String input =
+                        "6-7-1----\n" +
+                        "9--37----\n" +
+                        "-----6-34\n" +
+                        "3-----54-\n" +
+                        "-6-----1-\n" +
+                        "-92-----7\n" +
+                        "27-9-----\n" +
+                        "----65--2\n" +
+                        "----3-8-1\n";
+        SodokuSolver field = new SodokuSolver(input);
+        field.printField();
+        field.solve();
+        field.printField();
+
     }
 }
