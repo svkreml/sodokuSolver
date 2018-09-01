@@ -3,6 +3,8 @@ package svkreml.fun.sudoku;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Iterator;
 import java.util.List;
@@ -10,8 +12,10 @@ import java.util.List;
 public class Solver {
     public static void main(String[] args) throws InterruptedException {
         MyWebDriver myWebDriver = new MyWebDriver();
+
+
         myWebDriver.get("https://www.websudoku.com/");
-        Thread.sleep(5000);
+        Thread.sleep(1000);
         WebDriver frame = myWebDriver.chromeDriver.switchTo().frame(0);
         for (int i = 0; i < 10; i++) {
             loop(myWebDriver);
@@ -22,6 +26,7 @@ public class Solver {
     }
 
     private static void loop(MyWebDriver myWebDriver) throws InterruptedException {
+        myWebDriver.wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table[@id='puzzle_grid']/tbody/tr/td/input")));
         List<WebElement> elements = myWebDriver.chromeDriver.findElements(By.xpath("//table[@id='puzzle_grid']/tbody/tr/td/input"));
 
         SodokuSolver sodokuSolver = new SodokuSolver();
@@ -56,8 +61,10 @@ public class Solver {
             }
         }
         Thread.sleep(2000);
+        myWebDriver.wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@value=' How am I doing? ']")));
         myWebDriver.chromeDriver.findElement(By.xpath("//input[@value=' How am I doing? ']")).click();
         Thread.sleep(2000);
+        myWebDriver.wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@value=' Bring on a new puzzle! ']")));
         myWebDriver.chromeDriver.findElement(By.xpath("//input[@value=' Bring on a new puzzle! ']")).click();
     }
 }
