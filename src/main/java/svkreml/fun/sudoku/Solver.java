@@ -16,7 +16,7 @@ public class Solver {
             myWebDriver = new MyWebDriver();
 
 
-            myWebDriver.get("https://www.websudoku.com/");
+            myWebDriver.get("https://www.websudoku.com/?level=3");
             Thread.sleep(1000);
             WebDriver frame = myWebDriver.chromeDriver.switchTo().frame(0);
             for (int i = 0; i < 10; i++) {

@@ -1,23 +1,27 @@
 package svkreml.fun.sudoku;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.InputMismatchException;
+import java.util.Set;
+import java.util.Vector;
 
 public class SodokuSolver {
 
     Integer[][] field = new Integer[9 + 1][9 + 1];
     boolean stop = false;
     int iter = 0;
+
     public SodokuSolver() {
     }
-    public SodokuSolver(String input) {
-        Scanner s = new Scanner(input);
 
+    public SodokuSolver(String input) {
+        input = input.replaceAll("[^1234567890\\-]{1}", "");
         for (int y = 1; y <= 9; y++) {
-            String line = s.nextLine();
             for (int x = 1; x <= 9; x++) {
-                if (line.charAt(x - 1) == '-') continue;
+                char c = input.charAt((y - 1) * 9 + x - 1);
+                if (c == '-') continue;
                 //if (line.charAt(x) >= '1' && line.charAt(x) <= '9') throw new InputMismatchException();
-                field[x][y] = line.charAt(x - 1) - '0';
+                field[x][y] = c - '0';
             }
         }
     }
@@ -50,8 +54,8 @@ public class SodokuSolver {
         for (int yOffset = 0; yOffset <= 2; yOffset++) {
             for (int xOffset = 0; xOffset <= 2; xOffset++) {
                 Set<Integer> miniField = new HashSet<Integer>();
-                for (int i = 1 + xOffset*3; i <= 3 + xOffset*3; i++)
-                    for (int j = 1 + yOffset*3; j <= 3 + yOffset*3; j++) {
+                for (int i = 1 + xOffset * 3; i <= 3 + xOffset * 3; i++)
+                    for (int j = 1 + yOffset * 3; j <= 3 + yOffset * 3; j++) {
                         if (getCell(i, j) != null) {
                             if (miniField.contains(getCell(i, j)))
                                 return false;
@@ -71,23 +75,25 @@ public class SodokuSolver {
         field[x][y] = value;
     }
 
-    public void printField() {
-        System.out.println("------------------");
+    public boolean printField() {
+        boolean solvedField = true;
+        System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
         for (int y = 1; y <= 9; y++) {
             System.out.print("|");
             for (int x = 1; x <= 9; x++) {
-                if (getCell(x, y) == null)
-                    System.out.print(" ");
-                else
+                if (getCell(x, y) == null) {
+                    System.out.print("-");
+                    solvedField = false;
+                } else
                     System.out.print(getCell(x, y));
                 if (x % 3 == 0) System.out.print("|");
                 else System.out.print(" ");
             }
 
             System.out.println();
-            if (y % 3 == 0) System.out.println("------------------");
+            if (y % 3 == 0) System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
         }
-
+        return solvedField;
     }
 
     public Integer getCell(int x, int y) {
@@ -161,11 +167,15 @@ public class SodokuSolver {
                     a++;
                     setCell(x, y, poss.firstElement());
                     System.out.println("tacticA, put (" + x + "," + y + ")=" + poss.firstElement());
-                    return;
+                    continue;
                 } else if (poss.size() > 1) {
-
-                    a = tacticB(x, y, poss, a);
-
+                    if (tacticB(x, y, poss)) {
+                        a++;
+                        continue;
+                    } else if (tacticC(x, y, poss)) {
+                        a++;
+                        continue;
+                    }
                 }
             }
         }
@@ -173,6 +183,7 @@ public class SodokuSolver {
             stop = true;
         }
     }
+
 
     /*
      * Тактика А
@@ -190,17 +201,15 @@ public class SodokuSolver {
         return poss;
     }
 
+
     /*
      * Тактика Б
      * Ищем куда ещё можно записать числа из массива в пределах малой таблицы - если больше некуда, то пишем в данную ячейку
      * */
-    private int tacticB(int x, int y, Vector<Integer> poss, int a) {
-
-
+    private boolean tacticB(int x, int y, Vector<Integer> poss) {
         for (Integer value : poss) {
             int xOffset = getOffset(x);
             int yOffset = getOffset(y);
-
 
             int alter = 0;
             for (int i = 1 + xOffset; i <= 3 + xOffset; i++)
@@ -213,11 +222,40 @@ public class SodokuSolver {
             if (alter == 0) {
                 System.out.println("tacticB, put (" + x + "," + y + ")=" + value);
                 setCell(x, y, value);
-                return a + 1;
+                return true;
             }
         }
-        return a;
+        return false;
     }
 
+    /*
+     * смотрим всю строку и столбец и если чтобы в строке были все цифры ставить больше некуда кроме как в это точку, то ставим
+     * */
+    private boolean tacticC(int x, int y, Vector<Integer> poss) {
+        // System.out.println("tacticC, trying (" + x + "," + y + ")=" + poss);
+        for (Integer value : poss) {
+            int otherPossX = 0;
+            for (int i = 1; i <= 9; i++) {
+                if (i == x) continue;
+                if (getCell(i, y) != null) continue;
+                if (tacticA(i, y).contains(value)) otherPossX++;
+            }
+            //   System.out.println("tacticC, find " + otherPossX + " X possibilities");
 
+            int otherPossY = 0;
+            for (int j = 1; j <= 9; j++) {
+                if (j == y) continue;
+                if (getCell(x, j) != null) continue;
+                if (tacticA(x, j).contains(value)) otherPossY++;
+            }
+            //   System.out.println("tacticC, find " + otherPossY + " Y possibilities");
+            if (otherPossY == 0 || otherPossX == 0) {
+                setCell(x, y, value);
+                System.out.println("tacticC, put (" + x + "," + y + ")=" + value);
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
