@@ -1,145 +1,100 @@
 package svkreml.fun.sudoku;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class Tests {
 
+    @DataProvider
+    public Object[][] runParams() {
+        return new Object[][]{
+                {
+                        "easy", true,
+                        "|3 4 -|- 6 9|- - 1|\n" +
+                                "|- - -|- - -|- 5 -|\n" +
+                                "|- - 8|- - -|7 - -|\n" +
 
-    @Test
-    public void test1_easy() {
+                                "|2 - -|- - 7|- 9 -|\n" +
+                                "|5 - -|2 - 3|- - 6|\n" +
+                                "|- 7 -|9 - -|- - 2|\n" +
 
-
-        String input =
-                "|3 4 -|- 6 9|- - 1|\n" +
-                "|- - -|- - -|- 5 -|\n" +
-                "|- - 8|- - -|7 - -|\n" +
-
-                "|2 - -|- - 7|- 9 -|\n" +
-                "|5 - -|2 - 3|- - 6|\n" +
-                "|- 7 -|9 - -|- - 2|\n" +
-
-                "|- - 3|- - -|1 - -|\n" +
-                "|- 1 -|- - -|- - -|\n" +
-                "|9 - -|3 1 -|- 2 7|\n";
-
-        SodokuSolver field = new SodokuSolver(input);
-        field.printField();
-        field.solve();
-        Assert.assertEquals(field.printField(), true);
-
-    }
-
-    @Test
-    public void test1_hard() {
-        String input =
+                                "|- - 3|- - -|1 - -|\n" +
+                                "|- 1 -|- - -|- - -|\n" +
+                                "|9 - -|3 1 -|- 2 7|\n"
+                }, {
+                "hard", true,
                 "|7 - -|2 1 -|- - -|\n" +
-                "|8 - -|- - 3|- - -|\n" +
-                "|- - 1|- - -|4 5 2|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                "|- - -|- 2 7|- - -|\n" +
-                "|- 5 3|- 8 -|2 9 -|\n" +
-                "|- - -|6 9 -|- - -|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                "|9 8 7|- - -|1 - -|\n" +
-                "|- - -|7 - -|- - 6|\n" +
-                "|- - -|- 4 1|- - 5|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
-        SodokuSolver field = new SodokuSolver(input);
-        field.printField();
-        field.solve();
-        Assert.assertEquals(field.printField(), true);
-    }
-
-    @Test
-    public void test2_hard() {
-        String input =
+                        "|8 - -|- - 3|- - -|\n" +
+                        "|- - 1|- - -|4 5 2|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|- - -|- 2 7|- - -|\n" +
+                        "|- 5 3|- 8 -|2 9 -|\n" +
+                        "|- - -|6 9 -|- - -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|9 8 7|- - -|1 - -|\n" +
+                        "|- - -|7 - -|- - 6|\n" +
+                        "|- - -|- 4 1|- - 5|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
+        }, {
+                "hard", true,
                 "|1 - 2|- 5 7|9 - -|\n" +
-                "|- - -|- 2 -|- - -|\n" +
-                "|- - -|- - -|6 8 -|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                "|- - 1|3 7 -|- - -|\n" +
-                "|2 - -|6 - 4|- - 8|\n" +
-                "|- - -|- 8 5|1 - -|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                "|- 7 9|- - -|- - -|\n" +
-                "|- - -|- 4 -|- - -|\n" +
-                "|- - 6|5 3 -|4 - 7|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
-        SodokuSolver field = new SodokuSolver(input);
-        field.printField();
-        field.solve();
-        Assert.assertEquals(field.printField(), true);
-    }
-
-    @Test
-    public void test3_hard() {
-        String input =
-                      "|- 3 -|- 2 -|1 - -|\n" +
-                      "|- - -|3 - -|7 5 -|\n" +
-                      "|- - -|- - -|- 9 -|\n" +
-                      "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                      "|7 - -|- 3 1|8 6 -|\n" +
-                      "|- - -|8 - 5|- - -|\n" +
-                      "|- 8 3|2 9 -|- - 1|\n" +
-                      "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                      "|- 7 -|- - -|- - -|\n" +
-                      "|- 4 9|- - 6|- - -|\n" +
-                      "|- - 5|- 8 -|- 2 -|\n" +
-                      "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
-        SodokuSolver field = new SodokuSolver(input);
-        field.printField();
-        field.solve();
-        Assert.assertEquals(field.printField(), true);
-    }
-
-    @Test
-    public void test4_hard_false() {
-        String input =
+                        "|- - -|- 2 -|- - -|\n" +
+                        "|- - -|- - -|6 8 -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|- - 1|3 7 -|- - -|\n" +
+                        "|2 - -|6 - 4|- - 8|\n" +
+                        "|- - -|- 8 5|1 - -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|- 7 9|- - -|- - -|\n" +
+                        "|- - -|- 4 -|- - -|\n" +
+                        "|- - 6|5 3 -|4 - 7|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
+        }, {
+                "hard", true,
                 "|- 3 -|- 2 -|1 - -|\n" +
-                "|- - -|3 - -|7 5 -|\n" +
-                "|- - -|- - -|- 9 -|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                "|7 - -|- 3 1|8 - -|\n" +
-                "|- - -|8 - 5|- - -|\n" +
-                "|- 8 3|2 9 -|- - 1|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                "|- 7 -|- - -|- - -|\n" +
-                "|- 4 9|- - 6|- - -|\n" +
-                "|- - 5|- 8 -|- 2 -|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
-        SodokuSolver field = new SodokuSolver(input);
-        field.printField();
-        field.solve();
-        Assert.assertEquals(field.printField(), false, "убрана одна ячейка, на данный момент не решается");
-    }
-
-    @Test
-    public void test5_hard_false() {
-        String input =
+                        "|- - -|3 - -|7 5 -|\n" +
+                        "|- - -|- - -|- 9 -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|7 - -|- 3 1|8 6 -|\n" +
+                        "|- - -|8 - 5|- - -|\n" +
+                        "|- 8 3|2 9 -|- - 1|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|- 7 -|- - -|- - -|\n" +
+                        "|- 4 9|- - 6|- - -|\n" +
+                        "|- - 5|- 8 -|- 2 -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
+        }, {
+                "hard", false,
                 "|- 3 -|- 2 -|1 - -|\n" +
-                "|- - -|3 - -|7 5 -|\n" +
-                "|- - -|- - -|- 9 -|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                "|7 - -|- 3 1|8 - -|\n" +
-                "|- - -|8 - 5|- 6 -|\n" +
-                "|- 8 3|2 9 -|- - 1|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                "|- 7 -|- - -|- - -|\n" +
-                "|- 4 9|- - 6|- - -|\n" +
-                "|- - 5|- 8 -|- 2 -|\n" +
-                "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
-        SodokuSolver field = new SodokuSolver(input);
-        field.printField();
-        field.solve();
-        Assert.assertEquals(field.printField(), false, " неправильно стоит цифра, нерешаемо");
-    }
-
-    @Test
-    public void test1_evil() {
-        String input =
-
-                        "|- - -|1 7 -|- - -|\n" +
+                        "|- - -|3 - -|7 5 -|\n" +
+                        "|- - -|- - -|- 9 -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|7 - -|- 3 1|8 - -|\n" +
+                        "|- - -|8 - 5|- - -|\n" +
+                        "|- 8 3|2 9 -|- - 1|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|- 7 -|- - -|- - -|\n" +
+                        "|- 4 9|- - 6|- - -|\n" +
+                        "|- - 5|- 8 -|- 2 -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
+        }, {
+                "hard", false,
+                "|- 3 -|- 2 -|1 - -|\n" +
+                        "|- - -|3 - -|7 5 -|\n" +
+                        "|- - -|- - -|- 9 -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|7 - -|- 3 1|8 - -|\n" +
+                        "|- - -|8 - 5|- 6 -|\n" +
+                        "|- 8 3|2 9 -|- - 1|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|- 7 -|- - -|- - -|\n" +
+                        "|- 4 9|- - 6|- - -|\n" +
+                        "|- - 5|- 8 -|- 2 -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
+        }, {
+                "evil", true,
+                "|- - -|1 7 -|- - -|\n" +
                         "|8 - -|- - 4|9 - -|\n" +
                         "|4 - -|- - -|- 2 3|\n" +
                         "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
@@ -150,18 +105,10 @@ public class Tests {
                         "|6 5 -|- - -|- - 7|\n" +
                         "|- - 2|3 - -|- - 6|\n" +
                         "|- - -|- 9 7|- - -|\n" +
-                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
-        SodokuSolver field = new SodokuSolver(input);
-        field.printField();
-        field.solve();
-        Assert.assertEquals(field.printField(), true);
-    }
-
-    @Test
-    public void test2_evil() {
-        String input =
-
-                        "|- - -|4 - -|2 - -|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
+        }, {
+                "evil", true,
+                "|- - -|4 - -|2 - -|\n" +
                         "|6 9 8|- - 2|- - 1|\n" +
                         "|- - -|- - 7|- - -|\n" +
                         "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
@@ -172,18 +119,11 @@ public class Tests {
                         "|- - -|5 - -|- - -|\n" +
                         "|4 - -|8 - -|9 5 3|\n" +
                         "|- - 6|- - 1|- - -|\n" +
-                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
-        SodokuSolver field = new SodokuSolver(input);
-        field.printField();
-        field.solve();
-        Assert.assertEquals(field.printField(), true);
-    }
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
 
-    @Test
-    public void test3_evil() {
-        String input =
-
-                        "|- - -|- 2 -|- - 9|\n" +
+        }, {
+                "evil", true,
+                "|- - -|- 2 -|- - 9|\n" +
                         "|- - 5|- - 4|2 - -|\n" +
                         "|3 - -|- - 9|- - 5|\n" +
                         "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
@@ -194,10 +134,36 @@ public class Tests {
                         "|6 - -|7 - -|- - 1|\n" +
                         "|- - 4|9 - -|6 - -|\n" +
                         "|8 - -|- 3 -|- - -|\n" +
-                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
-        SodokuSolver field = new SodokuSolver(input);
-        field.printField();
-        field.solve();
-        Assert.assertEquals(field.printField(), true);
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯",
+        }, {
+                "evil", false,
+                "|6 - 7|- 1 -|- - -|\n" +
+                        "|9 - -|3 7 -|- - -|\n" +
+                        "|- - -|- - 6|- 3 4|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|3 - -|- - -|6 5 -|\n" +
+                        "|- 6 -|- - -|- 1 -|\n" +
+                        "|- 9 2|- - -|- - 7|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                        "|2 7 -|9 - -|- - -|\n" +
+                        "|- - -|- 6 5|- - 2|\n" +
+                        "|- - -|- 3 -|8 - 1|\n" +
+                        "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"
+        }
+        };
     }
+
+
+    @Test(dataProvider = "runParams")
+    public void tests(String discr, Boolean expectedResult, String input) {
+        System.out.println(discr + " " + expectedResult);
+        Field field = new Field(input);
+        SodokuSolver sodokuSolver = new SodokuSolver(field);
+        field.print();
+        Boolean solve = sodokuSolver.solve();
+        Assert.assertEquals(solve, expectedResult);
+
+    }
+
+
 }

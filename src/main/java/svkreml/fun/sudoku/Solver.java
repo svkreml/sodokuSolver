@@ -16,7 +16,7 @@ public class Solver {
             myWebDriver = new MyWebDriver();
 
 
-            myWebDriver.get("https://www.websudoku.com/?level=3");
+            myWebDriver.get("https://www.websudoku.com/?level=2");
             Thread.sleep(1000);
             WebDriver frame = myWebDriver.chromeDriver.switchTo().frame(0);
             for (int i = 0; i < 10; i++) {
@@ -34,7 +34,8 @@ public class Solver {
         myWebDriver.wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//table[@id='puzzle_grid']/tbody/tr/td/input")));
         List<WebElement> elements = myWebDriver.chromeDriver.findElements(By.xpath("//table[@id='puzzle_grid']/tbody/tr/td/input"));
 
-        SodokuSolver sodokuSolver = new SodokuSolver();
+        Field field = new Field();
+
 
 
         Iterator<WebElement> iterator = elements.iterator();
@@ -43,13 +44,13 @@ public class Solver {
                 try {
                     String value = iterator.next().getAttribute("value");
                     if (value.isEmpty()) continue;
-                    sodokuSolver.setCell(x, y, Integer.parseInt(value));
+                    field.setCell(x, y, Integer.parseInt(value));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        sodokuSolver.printField();
+        SodokuSolver sodokuSolver = new SodokuSolver(field);
         sodokuSolver.solve();
 
         Iterator<WebElement> iterator2 = elements.iterator();
@@ -59,7 +60,7 @@ public class Solver {
                     WebElement webElement = iterator2.next();
                     String value = webElement.getAttribute("value");
                     if (!value.isEmpty()) continue;
-                    webElement.sendKeys(sodokuSolver.getCell(x, y).toString());
+                    webElement.sendKeys(field.getCell(x, y).toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
