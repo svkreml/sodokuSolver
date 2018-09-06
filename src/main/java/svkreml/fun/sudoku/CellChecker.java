@@ -14,24 +14,22 @@ public class CellChecker {
     }
 
     public boolean check() {
+
         for (int y = 1; y <= 9; y++) {
             Set<Integer> line = new HashSet<>();
+            Set<Integer> col = new HashSet<>();
             for (int x = 1; x <= 9; x++) {
                 if (field.getCell(x, y) != null) {
                     if (line.contains(field.getCell(x, y))) return false;
                     line.add(field.getCell(x, y));
                 }
-            }
-        }
-        for (int x = 1; x <= 9; x++) {
-            Set<Integer> col = new HashSet<>();
-            for (int y = 1; y <= 9; y++) {
-                if (field.getCell(x, y) != null) {
-                    if (col.contains(field.getCell(x, y))) return false;
-                    col.add(field.getCell(x, y));
+                if (field.getCell(y, x) != null) {
+                    if (col.contains(field.getCell(y, x))) return false;
+                    col.add(field.getCell(y, x));
                 }
             }
         }
+        // проверка, что в каждом мини поле нет повторов
         for (int yOffset = 0; yOffset <= 2; yOffset++) {
             for (int xOffset = 0; xOffset <= 2; xOffset++) {
                 Set<Integer> miniField = new HashSet<Integer>();
@@ -83,7 +81,7 @@ public class CellChecker {
         return true;
     }
 
-    public Vector<Integer> getPossibilities(int x, int y) {
+    public Vector<Integer> getCellPossibilities(int x, int y) {
         Vector<Integer> poss = new Vector<Integer>();
         for (int i = 1; i <= 9; i++) {
             if (field.getCell(x, y) == null) {

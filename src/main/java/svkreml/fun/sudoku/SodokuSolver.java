@@ -37,11 +37,11 @@ public class SodokuSolver {
         int a = 0;
         for (int y = 1; y <= 9; y++) {
             for (int x = 1; x <= 9; x++) {
-                Vector<Integer> poss = cellChecker.getPossibilities(x, y);
+                Vector<Integer> poss = cellChecker.getCellPossibilities(x, y);
                 if (poss.size() == 1) {
                     a++;
                     field.setCell(x, y, poss.firstElement());
-                    System.out.println("getPossibilities, put (" + x + "," + y + ")=" + poss.firstElement());
+                    System.out.println("getCellPossibilities, put (" + x + "," + y + ")=" + poss.firstElement());
                     continue;
                 } else if (poss.size() > 1) {
                     if (tacticB(x, y, poss)) {
@@ -67,20 +67,30 @@ public class SodokuSolver {
         for (Integer value : poss) {
             int xOffset = Field.getOffset(x);
             int yOffset = Field.getOffset(y);
-            int alter = 0;
-            for (int i = 1 + xOffset; i <= 3 + xOffset; i++)
-                for (int j = 1 + yOffset; j <= 3 + yOffset; j++) {
-                    if (i == x && j == y) continue;
-                    if (field.getCell(i, j) != null) continue;
-                    if (cellChecker.getPossibilities(i, j).contains(value))
-                        alter++;
-                }
-            if (alter == 0) {
+
+            Vector<Integer> alters = new Vector<>();
+            if (getAlters(x, y, value, xOffset, yOffset)) {
+                alters.add(value);
+            }
+            if (alters.isEmpty()) {
                 System.out.println("tacticB, put (" + x + "," + y + ")=" + value);
                 field.setCell(x, y, value);
                 return true;
+            }else {
+                // тут можно добавить ветвление
             }
         }
+        return false;
+    }
+
+    private boolean getAlters(int x, int y, Integer value, int xOffset, int yOffset) {
+        for (int i = 1 + xOffset; i <= 3 + xOffset; i++)
+            for (int j = 1 + yOffset; j <= 3 + yOffset; j++) {
+                if (i == x && j == y) continue;
+                if (field.getCell(i, j) != null) continue;
+                if (cellChecker.getCellPossibilities(i, j).contains(value))
+                    return true;
+            }
         return false;
     }
 
@@ -89,19 +99,19 @@ public class SodokuSolver {
      * */
     private boolean tacticC(int x, int y, Vector<Integer> poss) {
         for (Integer value : poss) {
-            int otherPossX = 0;
+            Vector<Integer> otherPossX = new Vector<>();
             for (int i = 1; i <= 9; i++) {
                 if (i == x) continue;
                 if (field.getCell(i, y) != null) continue;
-                if (cellChecker.getPossibilities(i, y).contains(value)) otherPossX++;
+                if (cellChecker.getCellPossibilities(i, y).contains(value)) otherPossX.add(value);
             }
-            int otherPossY = 0;
+            Vector<Integer> otherPossY = new Vector<>();
             for (int j = 1; j <= 9; j++) {
                 if (j == y) continue;
                 if (field.getCell(x, j) != null) continue;
-                if (cellChecker.getPossibilities(x, j).contains(value)) otherPossY++;
+                if (cellChecker.getCellPossibilities(x, j).contains(value)) otherPossY.add(value);
             }
-            if (otherPossY == 0 || otherPossX == 0) {
+            if (otherPossY.isEmpty() || otherPossX.isEmpty()) {
                 field.setCell(x, y, value);
                 System.out.println("tacticC, put (" + x + "," + y + ")=" + value);
                 return true;
